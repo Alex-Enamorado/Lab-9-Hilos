@@ -27,7 +27,9 @@ public class HiloRecepcion extends Thread {
                 centro.esperarSiPausado();
                 Paquete paquete = generarPaquete();
                 centro.agregarBloqueante(centro.listaRecepcion, CentroLogistico.CAP_RECEPCION, paquete);
-                centro.registrar(paquete.getCodigo() + " recibido");
+                centro.registrar(String.format("%s recibido - %s, %s, %s, %.1fkg, %s",
+                        paquete.getCodigo(), paquete.getCliente(), paquete.getDireccion(),
+                        paquete.getCiudad(), paquete.getPeso(), paquete.getPrioridad()));
                 Thread.sleep(500);
 
                 centro.listaRecepcion.eliminar(paquete);

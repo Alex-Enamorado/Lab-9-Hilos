@@ -62,7 +62,7 @@ public class CentroLogistico {
         return listaDevueltos.tamano();
     }
 
-    public int getTotalEnProceso() {
+    public int getTotalPendientes() {
         return listaRecepcion.tamano() + listaAlmacen.tamano()
                 + listaEmpaquetado.tamano() + listaExpedicion.tamano();
     }

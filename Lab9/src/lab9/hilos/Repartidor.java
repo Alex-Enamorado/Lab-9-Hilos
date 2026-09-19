@@ -69,12 +69,14 @@ public class Repartidor extends Thread {
             } else {
                 paquete.incrementarIntentos();
                 centro.registrar(paquete.getCodigo() + " cliente ausente (intento " + paquete.getIntentos() + ")");
+                paquete.setEstado(EstadoPaquete.NUEVO_INTENTO);
+
                 if (paquete.getIntentos() >= 3) {
                     paquete.setEstado(EstadoPaquete.DEVUELTO);
                     centro.listaDevueltos.agregar(paquete);
                     centro.registrar(paquete.getCodigo() + " devuelto");
                 } else {
-                    paquete.setEstado(EstadoPaquete.NUEVO_INTENTO);
+                    paquete.setEstado(EstadoPaquete.EN_EXPEDICION);
                     centro.agregarBloqueante(centro.listaExpedicion, CentroLogistico.CAP_EXPEDICION, paquete);
                 }
             }
@@ -82,6 +84,13 @@ public class Repartidor extends Thread {
 
         estado = EstadoRepartidor.REGRESANDO;
         Thread.sleep(1000);
+
+        if (random.nextInt(10) == 0) {
+            estado = EstadoRepartidor.FUERA_DE_SERVICIO;
+            centro.registrar(getName() + " fuera de servicio (mantenimiento)");
+            Thread.sleep(3000);
+            centro.registrar(getName() + " disponible de nuevo");
+        }
     }
 
     public EstadoRepartidor getEstado() {
@@ -98,6 +107,10 @@ public class Repartidor extends Thread {
 
     public int getEntregados() {
         return entregados;
+    }
+
+    public String getRuta() {
+        return ruta;
     }
 
     private void cargarCamion() {

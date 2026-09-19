@@ -7,10 +7,15 @@ import lab9.estructuras.Paquete;
 public class HiloEmpaquetador extends Thread {
 
     private final CentroLogistico centro;
+    private volatile Paquete actual;
 
     public HiloEmpaquetador(CentroLogistico centro, String nombre) {
         super(nombre);
         this.centro = centro;
+    }
+
+    public Paquete getActual() {
+        return actual;
     }
 
     @Override
@@ -20,6 +25,7 @@ public class HiloEmpaquetador extends Thread {
                 centro.esperarSiPausado();
 
                 Paquete paquete = centro.extraerPrioridadBloqueante(centro.listaEmpaquetado);
+                actual = paquete;
                 paquete.setEstado(EstadoPaquete.EMPAQUETANDO);
                 centro.registrar(paquete.getCodigo() + " empaquetando por " + getName());
 
@@ -30,6 +36,7 @@ public class HiloEmpaquetador extends Thread {
 
                 paquete.setEstado(EstadoPaquete.EN_EXPEDICION);
                 centro.agregarBloqueante(centro.listaExpedicion, CentroLogistico.CAP_EXPEDICION, paquete);
+                actual = null;
             }
         } catch (InterruptedException e) {
             return;

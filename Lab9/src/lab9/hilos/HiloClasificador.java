@@ -7,10 +7,15 @@ import lab9.estructuras.Paquete;
 public class HiloClasificador extends Thread {
 
     private final CentroLogistico centro;
+    private volatile Paquete actual;
 
     public HiloClasificador(CentroLogistico centro, String nombre) {
         super(nombre);
         this.centro = centro;
+    }
+
+    public Paquete getActual() {
+        return actual;
     }
 
     @Override
@@ -20,6 +25,7 @@ public class HiloClasificador extends Thread {
                 centro.esperarSiPausado();
 
                 Paquete paquete = centro.extraerPrioridadBloqueante(centro.listaAlmacen);
+                actual = paquete;
                 paquete.setEstado(EstadoPaquete.CLASIFICANDO);
                 centro.registrar(paquete.getCodigo() + " tomado por " + getName());
 
@@ -31,6 +37,7 @@ public class HiloClasificador extends Thread {
                 centro.registrar(paquete.getCodigo() + " clasificado -> " + ruta);
 
                 centro.agregarBloqueante(centro.listaEmpaquetado, CentroLogistico.CAP_EMPAQUETADO, paquete);
+                actual = null;
             }
         } catch (InterruptedException e) {
             return;

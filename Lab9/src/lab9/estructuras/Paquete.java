@@ -58,8 +58,36 @@ public class Paquete {
         return estado;
     }
 
-    public void setEstado(EstadoPaquete estado) {
-        this.estado = estado;
+    public void setEstado(EstadoPaquete nuevo) {
+        if (!esTransicionValida(this.estado, nuevo)) {
+            throw new IllegalStateException("Transicion invalida: " + this.estado + " -> " + nuevo);
+        }
+        this.estado = nuevo;
+    }
+
+    private boolean esTransicionValida(EstadoPaquete actual, EstadoPaquete nuevo) {
+        switch (actual) {
+            case RECIBIDO:
+                return nuevo == EstadoPaquete.ALMACENADO;
+            case ALMACENADO:
+                return nuevo == EstadoPaquete.CLASIFICANDO;
+            case CLASIFICANDO:
+                return nuevo == EstadoPaquete.CLASIFICADO;
+            case CLASIFICADO:
+                return nuevo == EstadoPaquete.EMPAQUETANDO;
+            case EMPAQUETANDO:
+                return nuevo == EstadoPaquete.EMPAQUETADO;
+            case EMPAQUETADO:
+                return nuevo == EstadoPaquete.EN_EXPEDICION;
+            case EN_EXPEDICION:
+                return nuevo == EstadoPaquete.EN_REPARTO;
+            case EN_REPARTO:
+                return nuevo == EstadoPaquete.ENTREGADO || nuevo == EstadoPaquete.NUEVO_INTENTO;
+            case NUEVO_INTENTO:
+                return nuevo == EstadoPaquete.EN_EXPEDICION || nuevo == EstadoPaquete.DEVUELTO;
+            default:
+                return false;
+        }
     }
 
     public String getRuta() {
