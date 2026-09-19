@@ -23,4 +23,52 @@ public class Paquete {
         this.ruta = null;
         this.intentos = 0;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public Prioridad getPrioridad() {
+        return prioridad;
+    }
+
+    public EstadoPaquete getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPaquete estado) {
+        this.estado = estado;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+
+    public int getIntentos() {
+        return intentos;
+    }
+
+    public void incrementarIntentos() {
+        this.intentos++;
+    }
 }
