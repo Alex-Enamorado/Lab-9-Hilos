@@ -30,14 +30,14 @@ public class HiloRecepcion extends Thread {
                 centro.registrar(String.format("%s recibido - %s, %s, %s, %.1fkg, %s",
                         paquete.getCodigo(), paquete.getCliente(), paquete.getDireccion(),
                         paquete.getCiudad(), paquete.getPeso(), paquete.getPrioridad()));
-                Thread.sleep(500);
+                Thread.sleep(200);
 
                 centro.listaRecepcion.eliminar(paquete);
                 paquete.setEstado(EstadoPaquete.ALMACENADO);
-                centro.agregarBloqueante(centro.listaAlmacen, CentroLogistico.CAP_ALMACEN, paquete);
                 centro.registrar(paquete.getCodigo() + " almacenado");
+                centro.agregarBloqueante(centro.listaAlmacen, CentroLogistico.CAP_ALMACEN, paquete);
 
-                Thread.sleep(1000 + random.nextInt(2000));
+                Thread.sleep(100 + random.nextInt(400));
             }
         } catch (InterruptedException e) {
             return;
