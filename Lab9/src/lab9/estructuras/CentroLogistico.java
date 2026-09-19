@@ -4,13 +4,11 @@ public class CentroLogistico {
 
     public static final int CAP_RECEPCION = 10;
     public static final int CAP_ALMACEN = 20;
-    public static final int CAP_CLASIFICACION = 10;
     public static final int CAP_EMPAQUETADO = 8;
     public static final int CAP_EXPEDICION = 15;
 
     public final ListaEnlazada<Paquete> listaRecepcion;
     public final ListaEnlazada<Paquete> listaAlmacen;
-    public final ListaEnlazada<Paquete> listaClasificacion;
     public final ListaEnlazada<Paquete> listaEmpaquetado;
     public final ListaEnlazada<Paquete> listaExpedicion;
     public final ListaEnlazada<Paquete> listaEntregados;
@@ -26,7 +24,6 @@ public class CentroLogistico {
     public CentroLogistico() {
         listaRecepcion = new ListaEnlazada<>();
         listaAlmacen = new ListaEnlazada<>();
-        listaClasificacion = new ListaEnlazada<>();
         listaEmpaquetado = new ListaEnlazada<>();
         listaExpedicion = new ListaEnlazada<>();
         listaEntregados = new ListaEnlazada<>();
@@ -66,7 +63,7 @@ public class CentroLogistico {
     }
 
     public int getTotalEnProceso() {
-        return listaRecepcion.tamano() + listaAlmacen.tamano() + listaClasificacion.tamano()
+        return listaRecepcion.tamano() + listaAlmacen.tamano()
                 + listaEmpaquetado.tamano() + listaExpedicion.tamano();
     }
 
