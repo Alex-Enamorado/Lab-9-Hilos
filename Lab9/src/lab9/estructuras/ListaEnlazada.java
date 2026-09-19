@@ -63,4 +63,23 @@ public class ListaEnlazada<T> {
         }
         return actual.getDato();
     }
+
+    public synchronized T buscar(java.util.function.Predicate<T> criterio) {
+        Nodo<T> actual = cabeza;
+        while (actual != null) {
+            if (criterio.test(actual.getDato())) {
+                return actual.getDato();
+            }
+            actual = actual.getSiguiente();
+        }
+        return null;
+    }
+
+    public synchronized void recorrer(java.util.function.Consumer<T> accion) {
+        Nodo<T> actual = cabeza;
+        while (actual != null) {
+            accion.accept(actual.getDato());
+            actual = actual.getSiguiente();
+        }
+    }
 }
