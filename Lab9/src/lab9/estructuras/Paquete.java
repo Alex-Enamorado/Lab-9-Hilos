@@ -11,6 +11,7 @@ public class Paquete {
     private EstadoPaquete estado;
     private String ruta;
     private int intentos;
+    private final long tiempoCreacion;
 
     public Paquete(String codigo, String cliente, String direccion, String ciudad, double peso, Prioridad prioridad) {
         this.codigo = codigo;
@@ -22,6 +23,11 @@ public class Paquete {
         this.estado = EstadoPaquete.RECIBIDO;
         this.ruta = null;
         this.intentos = 0;
+        this.tiempoCreacion = System.currentTimeMillis();
+    }
+
+    public long getTiempoCreacion() {
+        return tiempoCreacion;
     }
 
     public String getCodigo() {
