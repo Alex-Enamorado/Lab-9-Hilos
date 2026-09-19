@@ -2,6 +2,8 @@ package lab9.hilos;
 
 import java.util.Random;
 import lab9.estructuras.CentroLogistico;
+import lab9.estructuras.EstadoPaquete;
+import lab9.estructuras.Paquete;
 import lab9.estructuras.Prioridad;
 
 public class HiloRecepcion extends Thread {
@@ -16,5 +18,37 @@ public class HiloRecepcion extends Thread {
     public HiloRecepcion(CentroLogistico centro) {
         this.centro = centro;
         this.random = new Random();
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (centro.estaActivo()) {
+                centro.esperarSiPausado();
+                Paquete paquete = generarPaquete();
+                centro.agregarBloqueante(centro.listaRecepcion, CentroLogistico.CAP_RECEPCION, paquete);
+                centro.registrar(paquete.getCodigo() + " recibido");
+                Thread.sleep(500);
+
+                centro.listaRecepcion.eliminar(paquete);
+                paquete.setEstado(EstadoPaquete.ALMACENADO);
+                centro.agregarBloqueante(centro.listaAlmacen, CentroLogistico.CAP_ALMACEN, paquete);
+                centro.registrar(paquete.getCodigo() + " almacenado");
+
+                Thread.sleep(1000 + random.nextInt(2000));
+            }
+        } catch (InterruptedException e) {
+            return;
+        }
+    }
+
+    private Paquete generarPaquete() {
+        String codigo = centro.generarCodigo();
+        String cliente = clientes[random.nextInt(clientes.length)];
+        String ciudad = ciudades[random.nextInt(ciudades.length)];
+        String direccion = "Calle " + (1 + random.nextInt(50)) + ", " + ciudad;
+        double peso = 0.5 + random.nextDouble() * 7.5;
+        Prioridad prioridad = prioridades[random.nextInt(prioridades.length)];
+        return new Paquete(codigo, cliente, direccion, ciudad, peso, prioridad);
     }
 }
